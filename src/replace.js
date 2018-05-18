@@ -30,12 +30,21 @@ function replaceElement(element, attrs = {}) {
   const elementAttrs = getAttrs(element);
   const name = elementAttrs['data-feather'];
   delete elementAttrs['data-feather'];
-
-  const svgString = icons[name].toSvg({
-    ...attrs,
-    ...elementAttrs,
-    ...{ class: classnames(attrs.class, elementAttrs.class) },
-  });
+  
+  if (typeof icons[name] !== "undefined") {
+    const svgString = icons[name].toSvg({
+      ...attrs,
+      ...elementAttrs,
+      ...{ class: classnames(attrs.class, elementAttrs.class) },
+    });
+  } else {
+    // Wasn't sure the "professional" way to handle this but i bet this will be helpful 
+    // and save everyone some red text.
+    console.log("(feather.js - replaceElement) Undefined error caught just in time. Please review the following.");
+    console.log(element);
+    console.log(attrs)
+  }
+  
   const svgDocument = new DOMParser().parseFromString(
     svgString,
     'image/svg+xml',
