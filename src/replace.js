@@ -31,18 +31,20 @@ function replaceElement(element, attrs = {}) {
   const name = elementAttrs['data-feather'];
   delete elementAttrs['data-feather'];
 
-  const svgString = icons[name].toSvg({
-    ...attrs,
-    ...elementAttrs,
-    ...{ class: classnames(attrs.class, elementAttrs.class) },
-  });
-  const svgDocument = new DOMParser().parseFromString(
-    svgString,
-    'image/svg+xml',
-  );
-  const svgElement = svgDocument.querySelector('svg');
-
-  element.parentNode.replaceChild(svgElement, element);
+  if (typeof icons[name] !== "undefined") {
+    const svgString = icons[name].toSvg({
+      ...attrs,
+      ...elementAttrs,
+      ...{ class: classnames(attrs.class, elementAttrs.class) },
+    });
+    const svgDocument = new DOMParser().parseFromString(
+      svgString,
+      'image/svg+xml',
+    );
+    const svgElement = svgDocument.querySelector('svg');
+  
+    element.parentNode.replaceChild(svgElement, element);
+  }
 }
 
 /**
